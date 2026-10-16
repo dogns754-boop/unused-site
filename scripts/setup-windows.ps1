@@ -1,7 +1,7 @@
 # 새 Windows PC 개발 준비 스크립트
 # 사용법 (PowerShell 에서, 저장소 폴더 안에서):
 #   powershell -ExecutionPolicy Bypass -File scripts\setup-windows.ps1
-# 하는 일: 필요한 도구를 winget 으로 설치 (이미 있으면 건너뜀) → 설치 확인
+# 하는 일: 필요한 도구를 winget 으로 설치 (이미 있으면 건너뜀) → 공통 MCP 도구(tools/) 설치
 
 $ErrorActionPreference = 'Continue'
 
@@ -33,6 +33,15 @@ if (-not (Test-Command 'claude')) {
     Invoke-RestMethod https://claude.ai/install.ps1 | Invoke-Expression
 } else {
     Write-Host '[✓] Claude Code 이미 있음' -ForegroundColor Green
+}
+
+# 공통 MCP 도구 (REA 등) — 저장소 폴더 안에서 실행했을 때만
+$toolsDir = Join-Path $PSScriptRoot '..\tools'
+if ((Test-Path (Join-Path $toolsDir 'package.json')) -and (Test-Command 'npm')) {
+    Write-Host '[…] 공통 MCP 도구(tools/) 설치 중' -ForegroundColor Yellow
+    npm install --prefix $toolsDir --no-audit --no-fund
+} else {
+    Write-Host '[!] Node.js 설치 후 PowerShell 을 다시 열고 이 스크립트를 한 번 더 실행하면 MCP 도구가 설치됩니다.' -ForegroundColor Yellow
 }
 
 Write-Host ''

@@ -3,6 +3,13 @@
     "context7": {
       "type": "http",
       "url": "https://mcp.context7.com/mcp"
+    },
+    "rea": {
+      "command": "node",
+      "args": [
+        "tools/node_modules/rea-agents/scripts/rea.mjs",
+        "mcp"
+      ]
     }
   }
 }

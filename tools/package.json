@@ -1,0 +1,8 @@
+{
+  "name": "workspace-tools",
+  "private": true,
+  "description": "워크스페이스 공통 MCP 도구. scripts/setup.sh / setup-windows.ps1 이 npm install 한다.",
+  "dependencies": {
+    "rea-agents": "6.5.0"
+  }
+}
