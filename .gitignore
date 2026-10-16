@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node / Web
+node_modules/
+coverage/
+
+# 빌드 결과물
+dist/
+build/
+
+# 비밀 정보 — 절대 커밋하지 않음
+.env
+.env.*
+!.env.example
+
+# OS / 에디터
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Claude Code 개인 설정
+.claude/settings.local.json

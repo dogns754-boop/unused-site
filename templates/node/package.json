@@ -1,0 +1,16 @@
+{
+  "name": "__NAME__",
+  "version": "0.1.0",
+  "description": "__DESC__",
+  "type": "module",
+  "bin": {
+    "__NAME__": "src/cli.js"
+  },
+  "scripts": {
+    "start": "node src/cli.js",
+    "test": "node --test --test-reporter=spec"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "__NAME__",
+  "version": "0.1.0",
+  "description": "__DESC__",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "test": "node --test --test-reporter=spec"
+  }
+}
