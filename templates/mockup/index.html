@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>__NAME__ 화면 시안</title>
+<style>
+/* ── 화면 시안(목업) 공통 ── 실제 프로그램을 만들기 전에 화면·동작을 빠르게 맞춰 보는 용도 */
+:root { --bg:#eef1f5; --panel:#ffffff; --ink:#1f2733; --muted:#5e6875; --line:#d6dce4; --accent:#2f7cf6; --fb:#ff4d6d; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg:#14181e; --panel:#1d232b; --ink:#edf1f6; --muted:#9aa6b4; --line:#2e3742; }
+}
+* { box-sizing: border-box; }
+body { margin:0; min-height:100vh; background:var(--bg); color:var(--ink);
+  font-family:"Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif; padding:24px 16px; }
+.stage { max-width: 960px; margin: 0 auto; }
+
+/* ── 피드백 모드: 각 요소에 번호표 ── */
+#fb-toggle { position:fixed; right:16px; bottom:16px; z-index:9999; border:0; border-radius:999px;
+  padding:10px 16px; font:inherit; font-weight:700; background:var(--fb); color:#fff; cursor:pointer;
+  box-shadow:0 4px 14px rgba(0,0,0,.25); }
+body.fb [data-ui] { outline:2px dashed var(--fb); outline-offset:2px; position:relative; cursor:copy; }
+.fb-tag { position:absolute; top:-18px; left:0; z-index:9998; background:var(--fb); color:#fff;
+  font:700 11px/1 system-ui,sans-serif; padding:3px 6px; border-radius:6px; white-space:nowrap; pointer-events:none; }
+#fb-toast { position:fixed; left:50%; bottom:72px; transform:translateX(-50%); background:#111; color:#fff;
+  padding:8px 14px; border-radius:8px; font-size:14px; opacity:0; transition:opacity .2s; pointer-events:none; z-index:9999; }
+</style>
+</head>
+<body>
+<main class="stage">
+  <!-- 화면 요소마다 data-ui="이름" 을 붙이면 피드백 모드에서 번호표가 생긴다 -->
+  <h1 data-ui="제목">__NAME__</h1>
+  <p data-ui="설명">__DESC__</p>
+</main>
+
+<button id="fb-toggle" type="button" title="요소마다 번호를 붙여서, 고칠 곳을 번호로 말할 수 있게 합니다">📍 번호 보기</button>
+<div id="fb-toast" role="status" aria-live="polite"></div>
+
+<script>
+// 피드백 모드: [번호] 이름 표시, 클릭하면 "[번호] 이름" 을 복사 → 채팅에 붙여넣고 고칠 내용을 적으면 된다.
+(() => {
+  const btn = document.getElementById('fb-toggle');
+  const toast = document.getElementById('fb-toast');
+  const show = (msg) => { toast.textContent = msg; toast.style.opacity = 1; setTimeout(() => (toast.style.opacity = 0), 1600); };
+  const label = (el, i) => `[${i}] ${el.dataset.ui}`;
+
+  btn.addEventListener('click', () => {
+    const on = document.body.classList.toggle('fb');
+    btn.textContent = on ? '✖ 번호 끄기' : '📍 번호 보기';
+    document.querySelectorAll('.fb-tag').forEach((t) => t.remove());
+    if (on) document.querySelectorAll('[data-ui]').forEach((el, i) => {
+      const tag = document.createElement('span');
+      tag.className = 'fb-tag';
+      tag.textContent = label(el, i + 1);
+      el.appendChild(tag);
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!document.body.classList.contains('fb')) return;
+    const el = e.target.closest('[data-ui]');
+    if (!el) return;
+    e.preventDefault(); e.stopPropagation();
+    const i = [...document.querySelectorAll('[data-ui]')].indexOf(el) + 1;
+    const text = label(el, i);
+    (navigator.clipboard?.writeText(text) ?? Promise.reject()).then(
+      () => show(`복사됨: ${text} — 채팅에 붙여넣고 고칠 점을 적어 주세요`),
+      () => show(`${text} — 이 번호를 채팅에 적어 주세요`));
+  }, true);
+})();
+</script>
+</body>
+</html>

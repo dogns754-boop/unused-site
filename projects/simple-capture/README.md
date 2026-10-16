@@ -6,8 +6,11 @@
 
 ```powershell
 cd projects\simple-capture
-dotnet run --project src\SimpleCapture.App
+dotnet watch --project src\SimpleCapture.App --non-interactive
 ```
+
+`dotnet watch` 로 띄워 두면 **코드를 저장할 때마다 프로그램이 자동으로 새로 고쳐집니다** (웹사이트 새로고침처럼).
+Claude 가 코드를 고치면 몇 초 뒤 화면에 바로 반영되니, 보면서 "이 버튼 더 크게" 처럼 말하면 됩니다. 끄려면 `Ctrl+C`.
 
 설치 없이 써 보려면: GitHub → Actions → 최근 실행 → **windows-apps** 아티팩트에서 `simple-capture.exe` 다운로드
 (처음 실행할 때 .NET 데스크톱 런타임 설치 안내가 뜨면 한 번만 설치)
