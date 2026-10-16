@@ -35,7 +35,8 @@
    ```powershell
    powershell -ExecutionPolicy Bypass -File scripts\setup-windows.ps1
    ```
-   Git, .NET 10 SDK, Node.js, Python, Claude Code 를 설치합니다 (이미 있으면 건너뜀).
+   Git, .NET 10 SDK, Node.js, Python, Claude Code, MCP 도구, Claude 플러그인을 설치합니다 (이미 있으면 건너뜀).
+   **처음에는 PowerShell 을 다시 열고 한 번 더 실행**하세요 — 새로 깐 도구로 남은 설치를 마무리합니다.
 3. **Claude Code 열기** — 둘 중 편한 것:
    - Claude **데스크톱 앱** → Code 탭 → `unused-site` 폴더 열기 (추천: 화면 보기 기능 사용 가능)
    - PowerShell 에서 저장소 폴더로 가서 `claude`

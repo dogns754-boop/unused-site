@@ -11,6 +11,8 @@
 
 진행 상황: [PROJECTS.md](PROJECTS.md) · 아이디어 수첩: [IDEAS.md](IDEAS.md)
 
+> 👉 **처음이라면: [docs/START.md](docs/START.md)** — 설치부터 첫 작업까지 따라 하기
+
 ## 어떻게 쓰나 (Claude Code 에서)
 
 ```text
