@@ -34,14 +34,14 @@ CLAUDE.md            이 파일 — 워크스페이스 규칙
 IDEAS.md             아이디어 수첩 (/idea 로 추가)
 PROJECTS.md          전체 프로젝트 목록과 상태
 .mcp.json            모든 프로젝트가 함께 쓰는 MCP 도구 (docs/MCP.md)
-docs/                WORKFLOW.md(개발 흐름), MCP.md(도구 설명)
+docs/                WORKFLOW.md(개발 흐름), MCP.md(도구), NEW-PC.md(다른 컴퓨터)
 projects/<이름>/     개별 프로그램
   PLAN.md            기획서 — 기능 체크리스트가 진행 상황의 기준
   REFERENCES.md      참고 프로그램·라이선스 (/research)
   CHANGELOG.md       변경 기록
   README.md          실행 방법
 templates/<유형>/    새 프로젝트 템플릿
-scripts/             new-project.sh · check.sh · status.sh · setup.sh
+scripts/             new-project.sh · check.sh · status.sh · setup.sh · sync-check.sh · setup-windows.ps1
 references/          /research 로 내려받은 오픈소스 (git 제외)
 .claude/skills/      슬래시 명령 (아래 표)
 ```
@@ -82,6 +82,13 @@ references/          /research 로 내려받은 오픈소스 (git 제외)
 - 클라우드 세션은 Linux 다. **windows 프로그램은 빌드·테스트만 되고 화면을 띄워 볼 수 없다.** 휴대폰 앱도 마찬가지.
 - 그래서 화면·OS 기능 작업을 마치면 사용자에게 **확인 방법**(GitHub Actions 에서 exe 받기, Expo Go 로 열기)을 체크리스트로 안내한다.
 - 화면을 직접 보며 다듬는 작업은 사용자 PC 의 Claude Code(데스크톱 앱)에서 하는 것이 좋다고 권한다.
+
+## 여러 컴퓨터에서 작업
+
+- 사용자는 집·회사 PC, 클라우드를 오가며 작업한다. **GitHub 저장소가 유일한 기준**이다 (설명: docs/NEW-PC.md).
+- 세션 시작 때 `[동기화]` 메시지가 있으면 작업 전에 사용자에게 알린다. 원격에 새 커밋이 있고 작업 트리가 깨끗하면 `git pull --ff-only` 를 제안한다.
+- 작업을 끝낼 때는 반드시 커밋하고 **푸시까지** 한다 (`/wrap`). 푸시가 실패하면 원인과 해결법을 쉬운 말로 알린다.
+- 컴퓨터마다 경로가 다르므로 코드·문서에 `C:\Users\...` 같은 절대 경로를 넣지 않는다.
 
 ## 커밋 규칙
 

@@ -22,7 +22,7 @@
 /wrap                                     ← 오늘 작업 마무리
 ```
 
-자세한 설명: [docs/WORKFLOW.md](docs/WORKFLOW.md) · MCP 도구: [docs/MCP.md](docs/MCP.md) · Claude 규칙: [CLAUDE.md](CLAUDE.md)
+자세한 설명: [docs/WORKFLOW.md](docs/WORKFLOW.md) · MCP 도구: [docs/MCP.md](docs/MCP.md) · **다른 컴퓨터에서 작업: [docs/NEW-PC.md](docs/NEW-PC.md)** · Claude 규칙: [CLAUDE.md](CLAUDE.md)
 
 ## 직접 실행
 
