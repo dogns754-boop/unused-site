@@ -1,7 +1,7 @@
 ---
 name: new-project
 description: 새 개인 프로그램 프로젝트를 projects/ 아래에 템플릿으로 만들고 목록에 등록한다. 사용자가 새 프로그램/프로젝트를 시작하자고 할 때 사용.
-argument-hint: <이름> [python|node|web] [한 줄 설명]
+argument-hint: <이름> [windows|mobile|python|node|web] [한 줄 설명]
 ---
 
 # 새 프로젝트 만들기
@@ -10,9 +10,11 @@ argument-hint: <이름> [python|node|web] [한 줄 설명]
 
 1. **인자 정리**
    - 이름: 영소문자·숫자·하이픈 (예: `todo-cli`). 한글 이름을 받으면 영어 이름을 제안한다.
-   - 유형이 없으면 설명을 보고 고른다 — CLI·자동화·데이터 처리 → `python`, 화면 있는 도구 → `web`, JS CLI·봇·서버 → `node`.
+   - 유형이 없으면 설명을 보고 고른다 (CLAUDE.md `유형 고르기` 표):
+     PC 프로그램 → `windows`, 휴대폰 앱 → `mobile`, 자동화·데이터 처리 → `python`, 브라우저 도구 → `web`, JS CLI·봇 → `node`.
      정말 애매할 때만 사용자에게 묻는다. 고른 이유는 한 줄로 알린다.
-   - 설명이 없으면 사용자에게 한 줄 설명을 묻는다.
+   - 설명이 없으면 사용자에게 한 줄 설명을 묻는다. 슬로건 "보다 간단한 ○○" 에 맞춰 다듬는다.
+   - IDEAS.md 에 이 아이디어가 있으면 그 내용을 이어받고, IDEAS.md 의 해당 항목에 `→ projects/<이름> 로 시작함` 을 표시한다.
 2. **생성**: `scripts/new-project.sh <이름> <유형> "<설명>"`
 3. **검증**: `scripts/check.sh <이름>` — 템플릿 테스트가 통과해야 한다. 실패하면 원인을 고치고 다시 실행한다.
 4. **커밋**: `[<이름>] chore: 프로젝트 생성`

@@ -22,7 +22,7 @@ for d in "${dirs[@]}"; do
     status="$(grep -m1 '^- 상태:' "$plan" | sed 's/^- 상태: *//')"
     done_n="$(grep -c '^\s*- \[[xX]\]' "$plan")"
     todo_n="$(grep -c '^\s*- \[ \]' "$plan")"
-    next="$(grep -m1 '^\s*- \[ \]' "$plan" | sed 's/^\s*- \[ \] *//')"
+    next="$(grep -m1 '^\s*- \[ \]' "$plan" | sed 's/^\s*- \[ \] *//' | cut -d: -f1 | cut -c1-40)"
   fi
   total=$((done_n + todo_n))
   line="- $name: ${status:-?} | 기능 $done_n/$total"

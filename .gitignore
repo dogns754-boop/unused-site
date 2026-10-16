@@ -30,3 +30,16 @@ Thumbs.db
 
 # Claude Code 개인 설정
 .claude/settings.local.json
+
+# .NET
+bin/
+obj/
+*.user
+.vs/
+
+# Expo
+.expo/
+web-build/
+
+# /research 로 내려받은 참고용 오픈소스 (커밋하지 않음)
+references/

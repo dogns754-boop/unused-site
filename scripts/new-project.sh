@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # 새 프로젝트를 템플릿에서 생성한다.
-# 사용법: scripts/new-project.sh <이름> <python|node|web> ["한 줄 설명"]
+# 사용법: scripts/new-project.sh <이름> <유형> ["한 줄 설명"]   (유형: templates/ 아래 폴더 이름)
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -24,31 +24,40 @@ if [[ ! -d "$ROOT/templates/$type" || "$type" == _* ]]; then
   exit 2
 fi
 
+if [[ "$desc" =~ [\"\\\<\>\{\}\`] ]]; then
+  echo "오류: 설명에는 \" \\ < > { } \` 문자를 쓸 수 없습니다 (코드 파일에 그대로 들어가기 때문)." >&2
+  exit 2
+fi
+
 dest="$ROOT/projects/$name"
 if [[ -e "$dest" ]]; then
   echo "오류: projects/$name 이(가) 이미 있습니다." >&2
   exit 1
 fi
 
-pkg="${name//-/_}"
+pkg="${name//-/_}"                                         # simple-capture → simple_capture (Python)
+csname="$(printf '%s' "$name" | sed -E 's/(^|-)([a-z])/\U\2/g')"  # simple-capture → SimpleCapture (C#)
 today="$(date +%Y-%m-%d)"
 
 mkdir -p "$dest"
 cp -R "$ROOT/templates/_common/." "$dest/"
 cp -R "$ROOT/templates/$type/." "$dest/"
 
-# __PKG__ 가 들어간 디렉터리/파일 이름 바꾸기 (깊은 것부터)
-find "$dest" -depth -name '*__PKG__*' | while read -r p; do
-  mv "$p" "$(dirname "$p")/$(basename "$p" | sed "s/__PKG__/$pkg/g")"
+# 자리표시자가 들어간 디렉터리/파일 이름 바꾸기 (깊은 것부터)
+find "$dest" -depth \( -name '*__PKG__*' -o -name '*__CSNAME__*' \) | while read -r p; do
+  mv "$p" "$(dirname "$p")/$(basename "$p" | sed -e "s/__PKG__/$pkg/g" -e "s/__CSNAME__/$csname/g")"
 done
 
 # 자리표시자 치환 (sed 특수문자 이스케이프)
 esc() { printf '%s' "$1" | sed -e 's/[\/&|\\]/\\&/g'; }
-grep -rlE '__(NAME|PKG|DESC|DATE|TYPE)__' "$dest" | while read -r f; do
+grep -rlIE '__(NAME|PKG|CSNAME|DESC|DATE|TYPE)__' "$dest" | while read -r f; do
+  d="$desc"
+  case "$f" in *.csproj|*.xaml|*.props) d="${d//&/&amp;}" ;; esac   # XML 파일은 & 이스케이프
   sed -i.bak \
     -e "s|__NAME__|$(esc "$name")|g" \
     -e "s|__PKG__|$(esc "$pkg")|g" \
-    -e "s|__DESC__|$(esc "$desc")|g" \
+    -e "s|__CSNAME__|$csname|g" \
+    -e "s|__DESC__|$(esc "$d")|g" \
     -e "s|__DATE__|$today|g" \
     -e "s|__TYPE__|$type|g" \
     "$f"
@@ -65,5 +74,6 @@ printf '| [%s](projects/%s/) | %s | %s | 🌱 기획 | %s |\n' \
 echo "✅ projects/$name 생성 완료 (유형: $type)"
 echo
 echo "다음 단계:"
-echo "  1) /spec $name      — 기획서(PLAN.md) 채우기"
-echo "  2) /feature $name   — 첫 기능 구현"
+echo "  1) /spec $name       — 기획서(PLAN.md) 채우기"
+echo "  2) /research $name   — 참고할 오픈소스 찾기 (선택)"
+echo "  3) /feature $name    — 첫 기능 구현"

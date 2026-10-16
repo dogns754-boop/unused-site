@@ -18,6 +18,7 @@ if [[ ${#targets[@]} -eq 0 ]]; then
 fi
 
 failed=()
+skipped=()
 for p in "${targets[@]}"; do
   p="${p#projects/}"; p="${p%/}"
   if [[ ! -d "$p" ]]; then
@@ -25,7 +26,14 @@ for p in "${targets[@]}"; do
   fi
   echo "━━━ $p ━━━"
   ok=1
-  if [[ -f "$p/pyproject.toml" ]]; then
+  if compgen -G "$p/*.sln" >/dev/null || compgen -G "$p/*.slnx" >/dev/null; then
+    # windows: C# 솔루션 — Core 로직 테스트 (WPF 화면도 빌드는 확인됨)
+    if ! command -v dotnet >/dev/null 2>&1; then
+      echo "⚠️  $p: dotnet 이 없어 건너뜀 (scripts/setup.sh 실행 또는 .NET SDK 설치 필요)"
+      skipped+=("$p"); continue
+    fi
+    (cd "$p" && dotnet test --nologo -v q) || ok=0
+  elif [[ -f "$p/pyproject.toml" ]]; then
     if command -v ruff >/dev/null 2>&1; then
       (cd "$p" && ruff check .) || ok=0
     fi
@@ -35,20 +43,24 @@ for p in "${targets[@]}"; do
       (cd "$p" && PYTHONPATH=src python3 -m unittest discover -s tests -v) || ok=0
     fi
   elif [[ -f "$p/package.json" ]]; then
-    if grep -q '"dependencies"\|"devDependencies"' "$p/package.json" && [[ ! -d "$p/node_modules" ]]; then
+    # mobile(Expo): 순수 로직만 node --test 로 검사하므로 무거운 설치는 생략
+    if ! grep -q '"expo"' "$p/package.json" \
+       && grep -q '"dependencies"\|"devDependencies"' "$p/package.json" \
+       && [[ ! -d "$p/node_modules" ]]; then
       (cd "$p" && npm install --no-audit --no-fund) || ok=0
     fi
     (cd "$p" && npm test --silent) || ok=0
   else
-    echo "⚠️  $p: 유형을 알 수 없어 건너뜀 (pyproject.toml / package.json 없음)"
-    continue
+    echo "⚠️  $p: 유형을 알 수 없어 건너뜀 (*.sln / pyproject.toml / package.json 없음)"
+    skipped+=("$p"); continue
   fi
   if [[ $ok -eq 1 ]]; then echo "✅ $p 통과"; else echo "❌ $p 실패"; failed+=("$p"); fi
 done
 
 echo
+[[ ${#skipped[@]} -gt 0 ]] && echo "건너뜀: ${skipped[*]}"
 if [[ ${#failed[@]} -gt 0 ]]; then
   echo "실패: ${failed[*]}"
   exit 1
 fi
-echo "모두 통과 (${#targets[@]}개)"
+echo "모두 통과 ($(( ${#targets[@]} - ${#skipped[@]} ))개)"

@@ -1,0 +1,20 @@
+{
+  "name": "__NAME__",
+  "version": "0.1.0",
+  "description": "__DESC__",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "test": "node --test --test-reporter=spec"
+  },
+  "dependencies": {
+    "expo": "~58.0.11",
+    "expo-status-bar": "~58.0.3",
+    "react": "19.3.0",
+    "react-native": "0.88.0"
+  }
+}

@@ -18,7 +18,13 @@
       "Bash(git log:*)",
       "Bash(git show:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(dotnet build:*)",
+      "Bash(dotnet test:*)",
+      "Bash(dotnet run:*)",
+      "Bash(scripts/setup.sh:*)",
+      "Bash(bash scripts/setup.sh:*)",
+      "mcp__context7"
     ],
     "deny": [
       "Read(./**/.env)",
@@ -33,10 +39,16 @@
         "hooks": [
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/setup.sh\"",
+            "timeout": 300
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/status.sh\" --brief"
           }
         ]
       }
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true
 }

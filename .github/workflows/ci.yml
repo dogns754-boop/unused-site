@@ -6,6 +6,7 @@ on:
 
 jobs:
   check:
+    name: 전체 테스트
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,7 +16,38 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
       - name: 검사 도구 설치
         run: pip install pytest ruff
       - name: 전체 프로젝트 검사
         run: bash scripts/check.sh
+
+  windows-apps:
+    name: Windows 프로그램 exe 만들기
+    needs: check
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - name: exe 만들기
+        shell: bash
+        run: |
+          shopt -s nullglob
+          mkdir -p out
+          for app in projects/*/src/*.App/*.App.csproj; do
+            name="$(basename "$(dirname "$(dirname "$(dirname "$app")")")")"
+            echo "::group::$name"
+            dotnet publish "$app" -c Release -o "out/$name"
+            echo "::endgroup::"
+          done
+          ls -R out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-apps
+          path: out/
+          if-no-files-found: ignore
+          retention-days: 14
