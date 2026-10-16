@@ -1,0 +1,20 @@
+{
+  "name": "simple-pill",
+  "version": "0.1.0",
+  "description": "보다 간단한 약 타이머 — 복용 알림과 음주 주의 시간",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "test": "node --test --test-reporter=spec"
+  },
+  "dependencies": {
+    "expo": "~58.0.11",
+    "expo-status-bar": "~58.0.3",
+    "react": "19.3.0",
+    "react-native": "0.88.0"
+  }
+}

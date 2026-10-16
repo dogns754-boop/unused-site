@@ -1,0 +1,16 @@
+<Window x:Class="SimpleDesk.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="simple-desk" Width="420" Height="220"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="Malgun Gothic">
+    <StackPanel Margin="20" VerticalAlignment="Center">
+        <TextBlock Text="보다 간단한 바탕화면 — 바로가기 보관함과 메모" FontSize="16" Margin="0,0,0,12" />
+        <DockPanel>
+            <Button x:Name="GreetButton" Content="인사" DockPanel.Dock="Right"
+                    Padding="14,4" Margin="8,0,0,0" Click="GreetButton_Click" />
+            <TextBox x:Name="NameBox" />
+        </DockPanel>
+        <TextBlock x:Name="Output" Margin="0,12,0,0" />
+    </StackPanel>
+</Window>

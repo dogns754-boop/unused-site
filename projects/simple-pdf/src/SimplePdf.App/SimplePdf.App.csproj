@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- 윈도우 화면(WPF). 실행은 Windows 에서만, 빌드는 어디서나 된다. -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!-- 10.0.19041.0: 화면 캡처·OCR 등 Windows 10/11 API 사용 가능 -->
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <AssemblyName>simple-pdf</AssemblyName>
+    <Product>보다 간단한 PDF — 가볍고 편한 PDF 보기·편집</Product>
+  </PropertyGroup>
+
+  <!-- `dotnet publish -c Release` → 실행 파일 하나 (.NET 데스크톱 런타임 필요, 용량 작음) -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>false</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SimplePdf.Core\SimplePdf.Core.csproj" />
+  </ItemGroup>
+
+</Project>
