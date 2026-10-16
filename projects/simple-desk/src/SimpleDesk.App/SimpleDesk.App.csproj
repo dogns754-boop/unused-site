@@ -18,6 +18,11 @@
     <PublishSingleFile>true</PublishSingleFile>
   </PropertyGroup>
 
+  <!-- dotnet watch 가 화면 파일(.xaml)을 고칠 때도 자동으로 다시 띄우도록 -->
+  <ItemGroup>
+    <Watch Include="**\*.xaml" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\SimpleDesk.Core\SimpleDesk.Core.csproj" />
   </ItemGroup>
